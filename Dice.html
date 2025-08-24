@@ -30,10 +30,10 @@
         blue 120deg 240deg,  /* Blue */
         red 240deg 360deg    /* Red */
       );
-      transition: transform 2s linear; /* simple smooth spin */
+      transition: transform 3s ease-out; /* spin now lasts 3s */
     }
 
-    /* Arrow pointing UP (flipped 180°) */
+    /* Arrow rotated 180° */
     .arrow {
       position: absolute;
       top: 50%;
@@ -42,8 +42,8 @@
       height: 0;
       border-left: 25px solid transparent;
       border-right: 25px solid transparent;
-      border-bottom: 40px solid white; /* white arrow pointing up */
-      transform: translate(-50%, -220px); /* move it ABOVE the wheel */
+      border-top: 40px solid white; /* arrow points down */
+      transform: translate(-50%, 180px) rotate(180deg); 
     }
 
     /* Mobile buttons */
@@ -84,7 +84,8 @@
     let currentRotation = 0;
 
     function spinTo(targetAngle) {
-      currentRotation = targetAngle;
+      // add extra spins (like 3 full circles) + target
+      currentRotation += 1080 + targetAngle; 
       wheel.style.transform = `rotate(${currentRotation}deg)`;
     }
 
