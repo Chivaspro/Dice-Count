@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Spinner Wheel</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #111;
+      color: white;
+      font-family: Arial, sans-serif;
+      user-select: none;
+    }
+
+    .container {
+      position: relative;
+    }
+
+    .wheel {
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      border: 6px solid white;
+      background: conic-gradient(
+        gold 0deg 120deg,    /* Yellow */
+        blue 120deg 240deg,  /* Blue */
+        red 240deg 360deg    /* Red */
+      );
+      transition: transform 2s linear; /* simple smooth spin */
+    }
+
+    /* Arrow pointing UP (flipped 180°) */
+    .arrow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-left: 25px solid transparent;
+      border-right: 25px solid transparent;
+      border-bottom: 40px solid white; /* white arrow pointing up */
+      transform: translate(-50%, -220px); /* move it ABOVE the wheel */
+    }
+
+    /* Mobile buttons */
+    #controls {
+      display: none;
+      margin-top: 20px;
+    }
+
+    #controls button {
+      padding: 10px 20px;
+      margin: 5px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    #controls button:nth-child(1) { background: red; color: white; }
+    #controls button:nth-child(2) { background: blue; color: white; }
+    #controls button:nth-child(3) { background: gold; color: black; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="wheel" id="wheel"></div>
+    <div class="arrow"></div>
+  </div>
+
+  <!-- Mobile Controls -->
+  <div id="controls">
+    <button onclick="spinTo(60)">Red</button>
+    <button onclick="spinTo(180)">Blue</button>
+    <button onclick="spinTo(300)">Yellow</button>
+  </div>
+
+  <script>
+    const wheel = document.getElementById("wheel");
+    let currentRotation = 0;
+
+    function spinTo(targetAngle) {
+      currentRotation = targetAngle;
+      wheel.style.transform = `rotate(${currentRotation}deg)`;
+    }
+
+    // Only run on websites (http/https)
+    if (location.protocol !== "http:" && location.protocol !== "https:") {
+      document.body.innerHTML = "<h2 style='color:white;text-align:center;'>⚠️ This only runs on a website (http/https)</h2>";
+      throw new Error("Not running on a website");
+    }
+
+    // PC: keyboard controls
+    document.addEventListener("keydown", (e) => {
+      switch (e.key.toLowerCase()) {
+        case "r": spinTo(60); break;   // Red center
+        case "b": spinTo(180); break;  // Blue center
+        case "y": spinTo(300); break;  // Yellow center
+      }
+    });
+
+    // Android/mobile: show buttons
+    if (/Mobi|Android/i.test(navigator.userAgent)) {
+      document.getElementById("controls").style.display = "block";
+    }
+  </script>
+</body>
+</html>
